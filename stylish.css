@@ -60,14 +60,16 @@ main {
     background-color: brown;
     color: cornsilk;
     padding: 8px;
-    justify-content: center;
+    justify-content: space-around;
     margin-left: 900px;
     margin-right: 900px;
+   
+    
 }
 
 .opçoes {
     display: flex;
-    gap: 55px;
+    gap: 80px;
     margin-left: 100px;
 
 }
