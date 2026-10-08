@@ -12,7 +12,7 @@ header {
     background-color: rgb(119, 19, 19);
     margin: 0;
     padding: 0;
-    width: 100vw;
+    width: 1000px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -54,7 +54,6 @@ main {
 
     }
 }
-
 .conferir {
     text-align: center;
     background-color: brown;
@@ -81,6 +80,7 @@ main {
     height: 490px;
     padding: 20px;
 }
+
 
 
 
