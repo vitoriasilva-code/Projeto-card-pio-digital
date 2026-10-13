@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+           
+                    </form>
+                </div>
+
+                <!-- ETAPA 2: Pagamento -->
+                <div id="step-2-content" class="hidden space-y-4">
+                    <div class="flex items-center justify-between border-b pb-2">
+                        <h2 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-credit-card text-red-600"></i> Forma de Pagamento</h2>
+                        <button onclick="backToAddress()" class="text-xs text-red-600 hover:underline"><i class="fa-solid fa-arrow-left"></i> Voltar ao Endereço</button>
+                    </div>
+
+                    <div class="space-y-3">
+                        <!-- Opção Pix -->
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <input type="radio" name="payment" value="pix" checked class="text-red-600 focus:ring-red-500" onclick="togglePaymentFields('pix')">
+                            <span class="ml-3 font-medium text-gray-700 flex items-center gap-2"><i class="fa-brands fa-pix text-teal-600"></i> PIX (Aprovação imediata)</span>
+                        </label>
+
+                        <!-- Opção Cartão -->
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <input type="radio" name="payment" value="card" class="text-red-600 focus:ring-red-500" onclick="togglePaymentFields('card')">
+                            <span class="ml-3 font-medium text-gray-700 flex items-center gap-2"><i class="fa-solid fa-credit-card text-blue-600"></i> Cartão de Crédito/Débito</span>
+                        </label>
+
+                        <!-- Opção Dinheiro -->
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <input type="radio" name="payment" value="cash" class="text-red-600 focus:ring-red-500" onclick="togglePaymentFields('cash')">
+                            <span class="ml-3 font-medium text-gray-700 flex items-center gap-2"><i class="fa-solid fa-money-bill-wave text-green-600"></i> Dinheiro na Entrega</span>
+                        </label>
+                    </div>
+
+          
+                    <div id="payment-extra-fields" class="mt-4 pt-4 border-t">
+                   
+                    </div>
+
+                    <button type="button" onclick="finalizeOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors mt-6">
+                        <i class="fa-solid fa-check mr-2"></i> Finalizar Pedido
+                    </button>
+                </div>
+
+             
+                <div id="step-success" class="hidden text-center py-8 space-y-4">
+                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Pedido Realizado com Sucesso!</h2>
+                    <p class="text-gray-600 text-sm max-w-sm mx-auto">Seu pedido já foi enviado para a cozinha e logo será entregue no endereço informado.</p>
+                    <div class="pt-4">
+                        <button onclick="location.reload()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded-lg text-sm">
+                            Fazer Novo Pedido
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Resumo do Carrinho -->
+            <div class="bg-white rounded-xl shadow-md p-6 h-fit">
+                <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4"><i class="fa-solid fa-receipt text-red-600"></i> Resumo do Pedido</h2>
+                
+                <div class="space-y-3 mb-4 text-sm">
+                    <h1> EXEMPLO DE COMO VAI FICAR O RESUMO DO PEDIDO:</h1>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">1x X-Burger Bacon Duplo</span>
+                        <span class="font-medium">R$ 28,00</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">1x Batata Frita Média</span>
+                        <span class="font-medium">R$ 12,00</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">1x Coca-Cola Lata 350ml</span>
+                        <span class="font-medium">R$ 6,00</span>
+                    </div>
+                </div>
+
+                <div class="border-t pt-3 space-y-2 text-sm">
+                    <div class="flex justify-between text-gray-600">
+                        <span>Subtotal</span>
+                        <span>R$ 46,00</span>
+                    </div>
+                    <div class="flex justify-between text-gray-600">
+                        <span>Taxa de Entrega</span>
+                        <span>R$ 5,00</span>
+                    </div>
+                    <div class="flex justify-between font-bold text-base text-gray-900 border-t pt-2">
+                        <span>Total</span>
+                        <span class="text-red-600">R$ 51,00</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+   
+    <footer class="text-center py-4 text-xs text-gray-500">
+        <br>
+        &copy; 2026 Cardapio digital. Todos os direitos reservados.
+    </footer>
+
+</body>
+</html>
