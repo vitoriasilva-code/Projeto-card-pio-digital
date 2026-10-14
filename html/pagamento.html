@@ -1,112 +1,364 @@
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <title>Pagamento | Cardápio Digital</title>
+
+    <link rel="stylesheet" href="../css/pagamento.css">
+
+    <!-- Ícones -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
+
 <body>
-           
-                    </form>
-                </div>
 
-                <!-- ETAPA 2: Pagamento -->
-                <div id="step-2-content" class="hidden space-y-4">
-                    <div class="flex items-center justify-between border-b pb-2">
-                        <h2 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-credit-card text-red-600"></i> Forma de Pagamento</h2>
-                        <button onclick="backToAddress()" class="text-xs text-red-600 hover:underline"><i class="fa-solid fa-arrow-left"></i> Voltar ao Endereço</button>
-                    </div>
+    <main>
+        <div class="checkout-container">
 
-                    <div class="space-y-3">
-                        <!-- Opção Pix -->
-                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                            <input type="radio" name="payment" value="pix" checked class="text-red-600 focus:ring-red-500" onclick="togglePaymentFields('pix')">
-                            <span class="ml-3 font-medium text-gray-700 flex items-center gap-2"><i class="fa-brands fa-pix text-teal-600"></i> PIX (Aprovação imediata)</span>
-                        </label>
+            <!-- ETAPA 2: FORMA DE PAGAMENTO -->
+            <section id="step-2-content" class="payment-card">
 
-                        <!-- Opção Cartão -->
-                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                            <input type="radio" name="payment" value="card" class="text-red-600 focus:ring-red-500" onclick="togglePaymentFields('card')">
-                            <span class="ml-3 font-medium text-gray-700 flex items-center gap-2"><i class="fa-solid fa-credit-card text-blue-600"></i> Cartão de Crédito/Débito</span>
-                        </label>
+                <div class="payment-header">
+                    <h2>
+                        <i class="fa-solid fa-credit-card"></i>
+                        Forma de Pagamento
+                    </h2>
 
-                        <!-- Opção Dinheiro -->
-                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                            <input type="radio" name="payment" value="cash" class="text-red-600 focus:ring-red-500" onclick="togglePaymentFields('cash')">
-                            <span class="ml-3 font-medium text-gray-700 flex items-center gap-2"><i class="fa-solid fa-money-bill-wave text-green-600"></i> Dinheiro na Entrega</span>
-                        </label>
-                    </div>
-
-          
-                    <div id="payment-extra-fields" class="mt-4 pt-4 border-t">
-                   
-                    </div>
-
-                    <button type="button" onclick="finalizeOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors mt-6">
-                        <i class="fa-solid fa-check mr-2"></i> Finalizar Pedido
+                    <button
+                        type="button"
+                        class="back-button"
+                        onclick="backToAddress()"
+                    >
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Voltar
                     </button>
                 </div>
 
-             
-                <div id="step-success" class="hidden text-center py-8 space-y-4">
-                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-3xl">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-800">Pedido Realizado com Sucesso!</h2>
-                    <p class="text-gray-600 text-sm max-w-sm mx-auto">Seu pedido já foi enviado para a cozinha e logo será entregue no endereço informado.</p>
-                    <div class="pt-4">
-                        <button onclick="location.reload()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded-lg text-sm">
-                            Fazer Novo Pedido
-                        </button>
-                    </div>
+                <p>Escolha como deseja pagar seu pedido.</p>
+
+                <div class="payment-options">
+
+                    <!-- PIX -->
+                    <label class="payment-option">
+                        <input
+                            type="radio"
+                            name="payment-method"
+                            value="pix"
+                            onchange="togglePaymentFields('pix')"
+                        >
+
+                        <span>
+                            <i class="fa-brands fa-pix pix-icon"></i>
+
+                            <span>
+                                <strong>PIX</strong>
+                                <small>Pagamento instantâneo</small>
+                            </span>
+                        </span>
+                    </label>
+
+                    <!-- CARTÃO -->
+                    <label class="payment-option">
+                        <input
+                            type="radio"
+                            name="payment-method"
+                            value="card"
+                            onchange="togglePaymentFields('card')"
+                        >
+
+                        <span>
+                            <i class="fa-solid fa-credit-card card-icon"></i>
+
+                            <span>
+                                <strong>Cartão</strong>
+                                <small>Crédito ou débito na entrega</small>
+                            </span>
+                        </span>
+                    </label>
+
+                    <!-- DINHEIRO -->
+                    <label class="payment-option">
+                        <input
+                            type="radio"
+                            name="payment-method"
+                            value="cash"
+                            onchange="togglePaymentFields('cash')"
+                        >
+
+                        <span>
+                            <i class="fa-solid fa-money-bill-wave cash-icon"></i>
+
+                            <span>
+                                <strong>Dinheiro na entrega</strong>
+                                <small>Pague ao receber seu pedido</small>
+                            </span>
+                        </span>
+                    </label>
+
                 </div>
 
-            </div>
+                <!-- CAMPOS EXTRAS DO PAGAMENTO -->
+                <div id="payment-extra-fields" class="payment-extra-fields"></div>
 
-            <!-- Resumo do Carrinho -->
-            <div class="bg-white rounded-xl shadow-md p-6 h-fit">
-                <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4"><i class="fa-solid fa-receipt text-red-600"></i> Resumo do Pedido</h2>
-                
-                <div class="space-y-3 mb-4 text-sm">
-                    <h1> EXEMPLO DE COMO VAI FICAR O RESUMO DO PEDIDO:</h1>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-600">1x X-Burger Bacon Duplo</span>
-                        <span class="font-medium">R$ 28,00</span>
+                <button
+                    type="button"
+                    class="finalize-button"
+                    onclick="finalizeOrder()"
+                >
+                    <i class="fa-solid fa-check"></i>
+                    Finalizar Pedido
+                </button>
+
+            </section>
+
+            <!-- RESUMO DO PEDIDO -->
+            <aside class="cart-summary">
+
+                <h2>
+                    <i class="fa-solid fa-receipt"></i>
+                    Resumo do Pedido
+                </h2>
+
+                <div class="cart-items">
+
+                    <div class="cart-item">
+                        <span>1x X-Burger Bacon Duplo</span>
+                        <span>R$ 28,00</span>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-600">1x Batata Frita Média</span>
-                        <span class="font-medium">R$ 12,00</span>
+
+                    <div class="cart-item">
+                        <span>1x Batata Frita Média</span>
+                        <span>R$ 12,00</span>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-600">1x Coca-Cola Lata 350ml</span>
-                        <span class="font-medium">R$ 6,00</span>
+
+                    <div class="cart-item">
+                        <span>1x Coca-Cola Lata 350ml</span>
+                        <span>R$ 6,00</span>
                     </div>
+
                 </div>
 
-                <div class="border-t pt-3 space-y-2 text-sm">
-                    <div class="flex justify-between text-gray-600">
+                <div class="cart-totals">
+
+                    <div class="total-row">
                         <span>Subtotal</span>
                         <span>R$ 46,00</span>
                     </div>
-                    <div class="flex justify-between text-gray-600">
+
+                    <div class="total-row">
                         <span>Taxa de Entrega</span>
                         <span>R$ 5,00</span>
                     </div>
-                    <div class="flex justify-between font-bold text-base text-gray-900 border-t pt-2">
+
+                    <div class="total-row grand-total">
                         <span>Total</span>
-                        <span class="text-red-600">R$ 51,00</span>
+                        <span>R$ 51,00</span>
                     </div>
+
                 </div>
-            </div>
+
+            </aside>
+
+            <!-- PEDIDO FINALIZADO -->
+            <section id="step-success" class="success-card hidden">
+
+                <div class="success-icon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <h2>Pedido Realizado com Sucesso!</h2>
+
+                <p>
+                    Obrigado pela preferência!
+                    Seu pedido foi finalizado.
+                </p>
+
+                <div class="success-actions">
+                    <button
+                        type="button"
+                        class="new-order-button"
+                        onclick="newOrder()"
+                    >
+                        Fazer Novo Pedido
+                    </button>
+                </div>
+
+            </section>
 
         </div>
     </main>
 
-   
-    <footer class="text-center py-4 text-xs text-gray-500">
-        <br>
-        &copy; 2026 Cardapio digital. Todos os direitos reservados.
+    <!-- RODAPÉ -->
+    <footer>
+        <p>© 2026 Cardápio digital. Todos os direitos reservados.</p>
     </footer>
+
+    <script>
+        // Exibe os campos de acordo com a forma de pagamento escolhida.
+        function togglePaymentFields(method) {
+            const extraFields = document.getElementById(
+                "payment-extra-fields"
+            );
+
+            if (method === "pix") {
+                extraFields.innerHTML = `
+                    <div class="payment-info">
+                        <i class="fa-brands fa-pix"></i>
+                        <div>
+                            <strong>Pagamento via PIX</strong>
+                            <p>
+                                As instruções para pagamento via PIX
+                                serão informadas pelo estabelecimento.
+                            </p>
+                        </div>
+                    </div>
+                `;
+            } else if (method === "card") {
+                extraFields.innerHTML = `
+                    <div class="payment-info">
+                        <i class="fa-solid fa-credit-card"></i>
+                        <div>
+                            <strong>Pagamento com cartão</strong>
+                            <p>
+                                Você poderá pagar com cartão de crédito
+                                ou débito no momento da entrega.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-type">Tipo de cartão</label>
+                        <select id="card-type" name="card-type">
+                            <option value="">Selecione</option>
+                            <option value="credito">Crédito</option>
+                            <option value="debito">Débito</option>
+                        </select>
+                    </div>
+                `;
+            } else if (method === "cash") {
+                extraFields.innerHTML = `
+                    <div class="payment-info">
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                        <div>
+                            <strong>Pagamento em dinheiro</strong>
+                            <p>
+                                Informe se precisará de troco.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="change-needed">
+                            Precisa de troco?
+                        </label>
+
+                        <select
+                            id="change-needed"
+                            name="change-needed"
+                            onchange="toggleChangeField()"
+                        >
+                            <option value="nao">Não</option>
+                            <option value="sim">Sim</option>
+                        </select>
+                    </div>
+
+                    <div id="change-field"></div>
+                `;
+            }
+        }
+
+        // Exibe o campo para informar o valor do troco.
+        function toggleChangeField() {
+            const changeNeeded = document.getElementById("change-needed");
+            const changeField = document.getElementById("change-field");
+
+            if (changeNeeded.value === "sim") {
+                changeField.innerHTML = `
+                    <div class="form-group">
+                        <label for="change-amount">
+                            Troco para quanto?
+                        </label>
+
+                        <input
+                            type="number"
+                            id="change-amount"
+                            name="change-amount"
+                            min="0"
+                            step="0.01"
+                            placeholder="Ex.: 100,00"
+                        >
+                    </div>
+                `;
+            } else {
+                changeField.innerHTML = "";
+            }
+        }
+
+        // Finaliza a demonstração do pedido.
+        function finalizeOrder() {
+            const selectedPayment = document.querySelector(
+                'input[name="payment-method"]:checked'
+            );
+
+            if (!selectedPayment) {
+                alert("Selecione uma forma de pagamento.");
+                return;
+            }
+
+            if (selectedPayment.value === "card") {
+                const cardType = document.getElementById("card-type");
+
+                if (!cardType || !cardType.value) {
+                    alert("Selecione crédito ou débito.");
+                    return;
+                }
+            }
+
+            if (selectedPayment.value === "cash") {
+                const changeNeeded = document.getElementById("change-needed");
+
+                if (changeNeeded.value === "sim") {
+                    const changeAmount = document.getElementById("change-amount");
+
+                    if (
+                        !changeAmount ||
+                        !changeAmount.value ||
+                        Number(changeAmount.value) <= 0
+                    ) {
+                        alert("Informe um valor válido para o troco.");
+                        return;
+                    }
+                }
+            }
+
+            document.getElementById("step-2-content").classList.add("hidden");
+            document.querySelector(".cart-summary").classList.add("hidden");
+            document.getElementById("step-success").classList.remove("hidden");
+        }
+
+        // Retorno provisório: ajuste para a etapa de endereço do seu projeto.
+        function backToAddress() {
+            const addressStep = document.getElementById("step-1-content");
+
+            if (addressStep) {
+                document.getElementById("step-2-content").classList.add("hidden");
+                addressStep.classList.remove("hidden");
+            } else {
+                alert("A etapa de endereço precisa estar conectada nesta página.");
+            }
+        }
+
+        // Reinicia a demonstração.
+        function newOrder() {
+            window.location.reload();
+        }
+    </script>
 
 </body>
 </html>

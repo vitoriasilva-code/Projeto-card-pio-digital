@@ -1,220 +1,264 @@
-<html lang="PT-BR">
 
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Love Junck Lanchonete</title>
+
     <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-
 <body>
-    <header>
-        <img src="midias/logo.png" alt="logo" class="img-logo">
-        <div class="cabecalho">
-            <h1> Fique à vontade para fazer o seu pedido!</h1>
-        </div>
-        <button onclick="acessarCarrinho()">🛒Carrinho</button>
 
-        <nav>
-            <button onclick="acessarCadápioDeHamburguer()">🍔Hamburgueria</button>
-
-            <button onclick="acessarCardapioDeSalgados()">🥐Salgados</button>
-
-            <button onclick="acessarCardapioDeSobremesas()">🍮Sobremesas</button>
-
-            <button onclick="acessarCardapioDeCafeDaManha()">☕ Café da manhã</button>
-
-            <button onclick="acessarCardapioDeBebidas()">🍺Bebidas</button>
-
-            <button onclick="acessarCardápioDeCombo()">🍔🍟🥤Combos</button>
-        </nav>
-
-    </header>
-    <main>
-
-
-        <section>
-            <h2 class="conferir">Confira!</h2>
-            <section>
-                <div class="opçoes">
-                    <div class="card">
-                        <h3>🍔Hamburgueria</h3>
-                        <strong>Cheeseburguer</strong>
-                        <p>Pão,carne(100g), queijo, molho especial</p>
-                        <strong>X-salada</strong>
-                        <p>pão,carne(100g),queijo,alface,tomate,picles e molho</p>
-                        <strong>x-bacon</strong>
-                        <p>Pão,carne(100g),queijo,bacon e molho</p>
-                        <strong>X-egg</strong>
-                        <p>Pão,carne(100g),queijo,ovo,alface,tomate e molho</p>
-                        <strong>Costela</strong>
-                        <p>Pão,hamburguer de costela(100g),queijo,cebola e bacon</p>
-                        <Strong>Chicken burguer</Strong>
-                        <p>Pão,frango empanado(100g),tomate e alface</p>
-                    </div>
-                    <div class="card">
-                        <h3>🥐Salgados</h3>
-                        <strong>Croissant de queijo com presunto</strong>
-                        <p>Massa folhada, quejo mussarela e presunto</p>
-                        <strong>Croissant de queijo</strong>
-                        <p>Massa folhada e queijo mussarela</p>
-                        <strong>Croissant de frango</strong>
-                        <p>Massa folhada com frango desfiado e tomate</p>
-                        <strong>Croissant de queijo e frango</strong>
-                        <P>Massa folhada, queijo mussarela e frango desfiado</P>
-                        <strong>Coxinha</strong>
-                        <p>Massa e frango desfiado cremoso</p>
-                        <strong>Risole</strong>
-                        <p>Massa, queijo mussarela e presunto</p>
-                        <strong>Empada de frango</strong>
-                        <p>Massa quebradiça,frango desfiado cremoso</p>
-                        <strong> Empada de carne de sol</strong>
-                        <p>Massa quebradiça,carne de sol cremosa e cebolas</p>
-                        <strong>Pastel de queijo</strong>
-                        <p>Massa e queijo mussarela</p>
-                        <strong>Pastel de frango</strong>
-                        <p>Massa,frango desfiado cremoso</p>
-                        <strong>Pastel de frango com queijo</strong>
-                        <p>Massa, frango desfiado e queijo mussarela</p>
-                        <strong>Pastel de carne de sol</strong>
-                        <p>Massa,carne de sol cremosa e cebolas</p>
-                        <strong>Onion rings</strong>
-                        <p>Uma porção de onion rings são 10 unidades de celolas empanadas e fritas</p>
-                        <strong>Batata frita</strong>
-                        <p>Uma porção de batatas fritas são exatamente 150 gramas de batatas crocantes e bacon </p>
-                    </div>
-                    <div class="card">
-                        <h3>🍮Sobremesas</h3>
-                        <p>Nossas sobremesas são produzidas com os lactíneos da piracanjuba e massas da estrela</p>
-                        <strong>Pudim de leite</strong>
-                        <p>Leite condensado, creme de leite,açúcar e ovos(150g)</p>
-                        <strong>Pavê</strong>
-                        <p>Creme brullé,bicoito maizena,ganache de chocolate e cacau em pó 50%(150g)</p>
-                        <strong>Palha italiana(versão de colher)</strong>
-                        <p>Ganashe de chocolate e biscoito maizena(150g)</p>
-                        <strong>Mousses(150g)</strong>
-                        <P>Chocolate</P>
-                        <p>Morango</p>
-                        <P>Maracujá</P>
-                        <p>Limão</p>
-                        <strong>Cheesecake(150g)</strong>
-                        <p>Limão</p>
-                        <p>Morango</p>
-                        <strong>tortas(150g)</strong>
-                        <p>Morango(massa branca,recheio de brigadeiro de morango,cobertira de ganache de chocolate
-                            branco e
-                            pedaços de morango para ornamentar)</p>
-                        <p>Chocolate(massa de chocolate, recheio de brigadeiro crenoso,cobertura de ganache de chocolate
-                            e
-                            granulado de chocolate)</p>
-                        <p>Red velvet(massa red velvet,recheio de creamcheese com leite doce,cobertura de ganache de
-                            chocolate
-                            branco e raspas de chocolate branco para ornamentar)</p>
-                    </div>
-                </div>
-                <div class="mais opçoes">
-                    <div class="card">
-                        <h3>☕Café da manhã</h3>
-                        <p>Nossas opções são em forma de combo</p>
-                        <strong>Café + pão na chapa</strong>
-                        <br>
-                        <strong>Café + pão assado com queijo mussarela</strong>
-                        <br>
-                        <strong>Café + pão assado com queijo mussarela e presunto</strong>
-                        <br>
-                        <strong>Café + pão com mortadela defumada</strong>
-                        <br>
-                        <strong>Café + 4 pães de queijo médio</strong>
-                        <br>
-                        <strong>Café + tapioca com queijo coalho</strong>
-                        <br>
-                        <strong>Café + tapioca com queijo e presunto</strong>
-                        <br>
-                        <strong>Café + cuscuz com manteiga</strong>
-                        <br>
-                        <strong>Café + cuscuz com queijo coalho</strong>
-                        <br>
-                        <strong>Café + cuscuz com carne de sol</strong>
-                        <br>
-                        <strong>Café + bolo fofo</strong>
-                        <br>
-                        <strong>Café + bolo mole</strong>
-                        <br>
-                        <strong>Café + bolachas(As bolachas são artesanais.Optamos por disponibilizar essa opção de café
-                            da
-                            manhã para que todos se sintam incluídos, inclusive os adoradores de bolachas)</strong>
-                        <p>Ps:Se quiser leite ou adicionar alguma quantidade extra é possível,haverá apenas um
-                            acrescimo.
-                        </p>
-                    </div>
-                    <div class="card">
-                        <h3>🍺Bebidas</h3>
-                        <stronger>Bebidas geladas</stronger>
-                        <h4>Refrigerantes</h4>
-                        <p>Cola</p>
-                        <p>Guaraná</p>
-                        <p>Cajú</p>
-                        <p>Limão</p>
-                        <p>Laranja</p>
-                        <p>Uva</p>
-                        <p>Ps: Também temos o famoso guaraná de jesus.</p>
-                        <h4>Sucos</h4>
-                        <p>Maracujá</p>
-                        <p>Acerola</p>
-                        <p>Manga</p>
-                        <p>Caju</p>
-                        <p>Cajá</p>
-                        <p>Goiaba</p>
-                        <p>Abacaxí</p>
-                        <h4>Outros</h4>
-                        <p>Capuccino</p>
-                        <p>Latte(café com leite)</p>
-                    </div>
-
-                    <div class="card">
-                        <h3>🍔🍟🥤Combos</h3>
-                        <strong>(sanduiche da sua preferência)+ uma porção de batatas fritas + Refrigerante de
-                            cola</strong>
-                        <strong>(sanduíche da sua preferência) + uma porção de onion rings + refrigerante de
-                            cola</strong>
-                        <strong>(sanduiche da sua preferêcia)+ uma porção de batatas fritas + (suco da sua
-                            preferência)</strong>
-                        <strong>(sanduiche da sua preferência)+ uma porção de onion rings + (suco da sua
-                            preferência)</strong>
-                        <P>Ps: O valor do combo será calculado de acordo com o sanduíche escolhido </P><br>
-                        <strong>(salgado da sua preferência)+ Refrigerante de cola</strong>
-                        <strong>(salgado da sua preferência)+(suco da sua preferência)</strong>
-                        <P>Ps: O valor do combo será calculado de acordo com o salgado escolhido </P><br>
-                    </div>
-                </div>
-            </section>
-
-            <div class="condimentos e aditivo">
-                <h2> Você é livre para montar o seu prato!</h2>
-                <p> Pessoas com necessidades especiais são super bem-vindas. Você pode escolher o que quer e a
-                    quantidade.
-                </p>
-
-                <h3>Condimentos</h3>
-                <P>Catchup 5ml</P>
-                <p>Maionese 5ml</p>
-                <p>Maionese temperado(vulgo "molhinho verde") 5ml</p>
-                <p>Mostarda 5ml</p>
+    <header class="topo">
+        <div class="topo-conteudo">
+            <div class="logo">
+                <img src="../img/logo.png" alt="Love Junck Lanchonete">
             </div>
+
+            <div class="titulo">
+                <span class="nome-loja">LOVE JUNCK LANCHONETE</span>
+                <h1>Fique à vontade para fazer o seu pedido!</h1>
+                <p>Escolha seus favoritos e monte seu pedido.</p>
+            </div>
+        </div>
+
+        <nav class="menu">
+            <a href="#cardapio" class="ativo">Cardápio</a>
+            <a href="#hamburgueria">🍔 Hamburgueria</a>
+            <a href="#salgados">🥟 Salgados</a>
+            <a href="#sobremesas">🍰 Sobremesas</a>
+            <a href="#cafe">☕ Café da manhã</a>
+            <a href="#bebidas">🥤 Bebidas</a>
+            <a href="#combos">🍟 Combos</a>
+            <a href="#carrinho" class="link-carrinho">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Carrinho <span class="contador">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main id="cardapio">
+
+        <section class="introducao">
+            <span>NOSSO CARDÁPIO</span>
+            <h2>Confira nossas opções</h2>
+            <p>Escolha seus produtos favoritos.</p>
         </section>
 
-        <div class="pedidos">
-            <h2>Fique à vontade para fazer o seu pedido com detalhes!</h2>
-            <p> Ex:"Hamburguer 2x ; refrigerante 3x..."</p>
-            <input type="text" id="pedido" placeholder="Peça aqui">
-            <buttom onclick="ordenarPedido()">Confirmar</buttom>
+        <div class="cardapio-lista">
+
+            <section class="categoria" id="hamburgueria">
+                <h2>🍔 Hamburgueria</h2>
+
+                <article class="produto">
+                    <div>
+                        <h3>Cheeseburguer</h3>
+                        <p>Pão, carne (100g), queijo e molho especial.</p>
+                        <strong>R$ 15,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Cheeseburguer">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>X-salada</h3>
+                        <p>Pão, carne (100g), queijo, alface, tomate, picles e molho.</p>
+                        <strong>R$ 18,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar X-salada">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>X-bacon</h3>
+                        <p>Pão, carne (100g), queijo, bacon e molho.</p>
+                        <strong>R$ 21,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar X-bacon">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>X-egg</h3>
+                        <p>Pão, carne (100g), queijo, ovo, alface, tomate e molho.</p>
+                        <strong>R$ 20,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar X-egg">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>Hambúrguer de Costela</h3>
+                        <p>Pão, hambúrguer de costela (100g), queijo, cebola e bacon.</p>
+                        <strong>R$ 25,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Hambúrguer de Costela">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>Chicken Burguer</h3>
+                        <p>Pão, frango empanado (100g), tomate e alface.</p>
+                        <strong>R$ 18,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Chicken Burguer">+</button>
+                </article>
+            </section>
+
+            <section class="categoria" id="salgados">
+                <h2>🥟 Salgados</h2>
+
+                <article class="produto">
+                    <div>
+                        <h3>Coxinha de Frango</h3>
+                        <p>Massa crocante com recheio de frango.</p>
+                        <strong>R$ 7,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Coxinha">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>Pastel</h3>
+                        <p>Pastel crocante com recheio à escolha.</p>
+                        <strong>R$ 8,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Pastel">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>Empada</h3>
+                        <p>Empada de massa leve e saborosa.</p>
+                        <strong>R$ 6,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Empada">+</button>
+                </article>
+            </section>
+
+            <section class="categoria" id="sobremesas">
+                <h2>🍰 Sobremesas</h2>
+
+                <article class="produto">
+                    <div>
+                        <h3>Bolo de Chocolate</h3>
+                        <p>Fatia de bolo com cobertura de chocolate.</p>
+                        <strong>R$ 8,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Bolo de Chocolate">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>Pudim</h3>
+                        <p>Pudim cremoso com calda de caramelo.</p>
+                        <strong>R$ 7,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Pudim">+</button>
+                </article>
+            </section>
+
+            <section class="categoria" id="cafe">
+                <h2>☕ Café da manhã</h2>
+
+                <article class="produto">
+                    <div>
+                        <h3>Café com Leite</h3>
+                        <p>Bebida quente preparada com café e leite.</p>
+                        <strong>R$ 5,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Café com Leite">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>Pão com Manteiga</h3>
+                        <p>Pão quentinho com manteiga.</p>
+                        <strong>R$ 4,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Pão com Manteiga">+</button>
+                </article>
+            </section>
+
+            <section class="categoria" id="bebidas">
+                <h2>🥤 Bebidas</h2>
+
+                <article class="produto">
+                    <div>
+                        <h3>Coca-Cola Lata 350 ml</h3>
+                        <p>Refrigerante em lata.</p>
+                        <strong>R$ 6,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Coca-Cola">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>Suco Natural</h3>
+                        <p>Suco natural gelado.</p>
+                        <strong>R$ 7,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Suco Natural">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>Água Mineral</h3>
+                        <p>Água mineral sem gás.</p>
+                        <strong>R$ 3,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Água Mineral">+</button>
+                </article>
+            </section>
+
+            <section class="categoria" id="combos">
+                <h2>🍔 Combos</h2>
+
+                <article class="produto">
+                    <div>
+                        <h3>Combo Clássico</h3>
+                        <p>Cheeseburguer, batata frita e refrigerante.</p>
+                        <strong>R$ 29,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Combo Clássico">+</button>
+                </article>
+
+                <article class="produto">
+                    <div>
+                        <h3>Combo Bacon</h3>
+                        <p>X-bacon, batata frita e refrigerante.</p>
+                        <strong>R$ 35,00</strong>
+                    </div>
+                    <button class="adicionar" type="button" aria-label="Adicionar Combo Bacon">+</button>
+                </article>
+            </section>
+
         </div>
+
+        <section class="observacoes">
+            <h2>Tem algum detalhe para informar?</h2>
+            <p>Use este espaço para observações, como retirar algum ingrediente ou indicar preferências.</p>
+            <label for="observacao">Observações do pedido</label>
+            <textarea id="observacao" placeholder="Ex.: sem cebola, molho à parte..."></textarea>
+        </section>
+
+        <section class="carrinho" id="carrinho">
+            <h2><i class="fa-solid fa-cart-shopping"></i> Seu carrinho</h2>
+            <p>Seus produtos escolhidos aparecerão aqui quando a função de carrinho for implementada.</p>
+            <p class="total">Total: R$ 0,00</p>
+            <button class="finalizar" type="button">Continuar para entrega</button>
+        </section>
+
     </main>
 
-    <footer class="rodape">
-        &copy Lanchonete 2026.Todos os direitos reservados.
+    <footer>
+        <p>© 2026 Love Junck Lanchonete. Todos os direitos reservados.</p>
     </footer>
-</body>
 
+</body>
 </html>
