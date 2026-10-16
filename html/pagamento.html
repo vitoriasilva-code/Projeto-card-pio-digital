@@ -99,40 +99,12 @@
                     Resumo do Pedido
                 </h2>
 
-                <div class="cart-items">
-
-                    <div class="cart-item">
-                        <span>1x X-Burger Bacon Duplo</span>
-                        <span>R$ 28,00</span>
-                    </div>
-
-                    <div class="cart-item">
-                        <span>1x Batata Frita Média</span>
-                        <span>R$ 12,00</span>
-                    </div>
-
-                    <div class="cart-item">
-                        <span>1x Coca-Cola Lata 350ml</span>
-                        <span>R$ 6,00</span>
-                    </div>
-
-                </div>
+                <div class="cart-items"></div>
 
                 <div class="cart-totals">
-
-                    <div class="total-row">
-                        <span>Subtotal</span>
-                        <span>R$ 46,00</span>
-                    </div>
-
-                    <div class="total-row">
-                        <span>Taxa de Entrega</span>
-                        <span>R$ 5,00</span>
-                    </div>
-
                     <div class="total-row grand-total">
                         <span>Total</span>
-                        <span>R$ 51,00</span>
+                        <span class="order-total">R$ 0,00</span>
                     </div>
 
                 </div>
@@ -272,6 +244,13 @@
 
         // Finaliza a demonstração do pedido.
         function finalizeOrder() {
+            const cart = JSON.parse(localStorage.getItem("loveJunckCart") || "[]");
+
+            if (!Array.isArray(cart) || cart.length === 0) {
+                alert("Seu carrinho está vazio. Volte ao cardápio e adicione produtos.");
+                return;
+            }
+
             const selectedPayment = document.querySelector(
                 'input[name="payment-method"]:checked'
             );

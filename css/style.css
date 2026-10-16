@@ -302,6 +302,20 @@ main {
     color: var(--vermelho);
 }
 
+.item-carrinho {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid #F2E8E2;
+    font-size: 14px;
+}
+
+.item-carrinho strong {
+    flex-shrink: 0;
+    color: var(--vermelho);
+}
+
 .carrinho .total {
     padding-top: 15px;
     border-top: 1px solid var(--borda);
