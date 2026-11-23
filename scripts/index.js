@@ -1,43 +1,55 @@
 const CART_STORAGE_KEY = "loveJunckCart";
-const itensCarrinho = carregarCarrinho();
+const OBSERVACAO_STORAGE_KEY = "loveJunckOrderNote";
+let carrinhoAlterado = false;
+let possuiCarrinhoLocal = false;
+let itensCarrinho = carregarCarrinhoLocal();
+let filaDeAtualizacao = Promise.resolve();
 
-function carregarCarrinho() {
-    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio", {
-        method: "GET"
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Erro ao buscar o cardápio.");
-            }
-            return response.json();
-        })
-        .then((itensCardapio) => {
-            const itensSalvos = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
-            itensSalvos.forEach((item) => {
-                const itemCardapio = itensCardapio.find((produto) => produto.nome === item.nome);
-                if (itemCardapio) {
-                    item.precoCentavos = itemCardapio.precoCentavos;
-                }
-            });
+function validarItens(itens) {
+    if (!Array.isArray(itens)) {
+        return [];
+    }
 
-        if (!Array.isArray(itensSalvos)) {
-            throw new Error("O formato salvo para o carrinho é inválido.");
+    const itensValidos = new Map();
+    itens.forEach((item) => {
+        if (
+            !item ||
+            typeof item.nome !== "string" ||
+            !item.nome.trim() ||
+            !Number.isSafeInteger(item.precoCentavos) ||
+            item.precoCentavos < 0 ||
+            !Number.isSafeInteger(item.quantidade) ||
+            item.quantidade < 1
+        ) {
+            return;
         }
 
-        return itensSalvos.filter((item) =>
-            item &&
-            typeof item.nome === "string" &&
-            Number.isInteger(item.precoCentavos) &&
-            Number.isInteger(item.quantidade) &&
-            item.precoCentavos >= 0 &&
-            item.quantidade > 0
-        );
-    }) 
-
-    .catch(function (erro) {
-        console.error("Não foi possível carregar o carrinho salvo.", erro);
-        return [];
+        const nome = item.nome.trim();
+        const existente = itensValidos.get(nome);
+        if (existente) {
+            existente.quantidade += item.quantidade;
+        } else {
+            itensValidos.set(nome, {
+                nome,
+                precoCentavos: item.precoCentavos,
+                quantidade: item.quantidade
+            });
+        }
     });
+
+    return Array.from(itensValidos.values());
+}
+
+function carregarCarrinhoLocal() {
+    try {
+        const salvo = localStorage.getItem(CART_STORAGE_KEY);
+        possuiCarrinhoLocal = salvo !== null;
+        return salvo === null ? [] : validarItens(JSON.parse(salvo));
+    } catch (erro) {
+        possuiCarrinhoLocal = true;
+        console.error("Não foi possível carregar o carrinho do navegador.", erro);
+        return [];
+    }
 }
 
 function formatarMoeda(valorCentavos) {
@@ -47,73 +59,26 @@ function formatarMoeda(valorCentavos) {
     });
 }
 
-function salvarCarrinho() {
-    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(itensCarrinho)
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Erro ao buscar o cardápio.");
-            }
-            return response.json();
-        })
-        .then((itensCardapio) => {
-            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(itensCarrinho));
-            return true;
-        })
-        .catch((erro) => {
-            console.error("Não foi possível salvar o carrinho no navegador.", erro);
-            alert("Não foi possível salvar seu carrinho. Verifique as configurações do navegador e tente novamente.");
-            return false;
-        });
-}
-
 function atualizarCarrinho() {
-    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio", {
-        method: "PUT",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(itensCarrinho)
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Erro ao buscar o cardápio.");
-            }
-            return response.json();
-        })
-        .then((itensCardapio) => {
-            const itensSalvos = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
-            itensSalvos.forEach((item) => {
-                const itemCardapio = itensCardapio.find((produto) => produto.nome === item.nome);
-                if (itemCardapio) {
-                    item.precoCentavos = itemCardapio.precoCentavos;
-                }
-            });
-            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(itensSalvos));
-        })
-        .catch((erro) => {
-            console.error("Não foi possível atualizar o carrinho.", erro);
-        });
-}
-
-const listaCarrinho = document.querySelector(".lista-carrinho");
-const totalCarrinho = document.querySelector(".valor-total");
-const contadorCarrinho = document.querySelector(".contador");
+    const listaCarrinho = document.querySelector(".lista-carrinho");
+    const totalCarrinho = document.querySelector(".valor-total");
+    const contadorCarrinho = document.querySelector(".contador");
 
     if (!listaCarrinho || !totalCarrinho || !contadorCarrinho) {
         return;
     }
 
     listaCarrinho.replaceChildren();
-    let totalCentavos = 0;
-    let quantidadeTotal = 0;
+    const quantidadeTotal = itensCarrinho.reduce(
+        (total, item) => total + item.quantidade,
+        0
+    );
+    const totalCentavos = itensCarrinho.reduce(
+        (total, item) => total + item.precoCentavos * item.quantidade,
+        0
+    );
 
     itensCarrinho.forEach((item) => {
-        const subtotalCentavos = item.precoCentavos * item.quantidade;
-        totalCentavos += subtotalCentavos;
-        quantidadeTotal += item.quantidade;
-
         const linha = document.createElement("div");
         linha.className = "item-carrinho";
 
@@ -121,7 +86,7 @@ const contadorCarrinho = document.querySelector(".contador");
         nome.textContent = `${item.quantidade}x ${item.nome}`;
 
         const preco = document.createElement("strong");
-        preco.textContent = formatarMoeda(subtotalCentavos);
+        preco.textContent = formatarMoeda(item.precoCentavos * item.quantidade);
 
         linha.append(nome, preco);
         listaCarrinho.append(linha);
@@ -135,18 +100,73 @@ const contadorCarrinho = document.querySelector(".contador");
 
     totalCarrinho.textContent = formatarMoeda(totalCentavos);
     contadorCarrinho.textContent = quantidadeTotal;
+}
 
+function salvarCarrinho() {
+    carrinhoAlterado = true;
+    possuiCarrinhoLocal = true;
+
+    try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(itensCarrinho));
+    } catch (erro) {
+        console.error("Não foi possível salvar o carrinho no navegador.", erro);
+        atualizarStatus("O carrinho não pôde ser salvo neste navegador.");
+        return;
+    }
+
+    atualizarCarrinho();
+    filaDeAtualizacao = filaDeAtualizacao
+        .catch(() => {})
+        .then(() =>
+            window.CardapioApi.request("/carrinho", {
+                method: "PUT",
+                body: JSON.stringify(itensCarrinho)
+            })
+        )
+        .then(() => atualizarStatus(""))
+        .catch((erro) => {
+            console.error("Não foi possível sincronizar o carrinho com o servidor.", erro);
+            atualizarStatus("Carrinho salvo neste navegador; não foi possível sincronizar com o servidor.");
+        });
+}
+
+function atualizarStatus(mensagem) {
+    const status = document.querySelector(".status-carrinho");
+    if (status) {
+        status.textContent = mensagem;
+    }
+}
+
+async function carregarCarrinhoDoServidor() {
+    try {
+        const itensRemotos = validarItens(
+            await window.CardapioApi.request("/carrinho")
+        );
+
+        if (!possuiCarrinhoLocal && !carrinhoAlterado) {
+            itensCarrinho = itensRemotos;
+            possuiCarrinhoLocal = true;
+            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(itensCarrinho));
+            atualizarCarrinho();
+        }
+    } catch (erro) {
+        console.error("Não foi possível carregar o carrinho do servidor.", erro);
+        atualizarStatus("Servidor indisponível; o carrinho local continua disponível.");
+    }
+}
+
+atualizarCarrinho();
 
 document.querySelectorAll(".produto .adicionar").forEach((botao) => {
     botao.addEventListener("click", () => {
         const produto = botao.closest(".produto");
-        const nome = produto.querySelector("h3").textContent.trim();
-        const textoPreco = produto.querySelector("strong").textContent;
-        const precoEncontrado = textoPreco.match(/R\$\s*([\d.]+,\d{2})/);
+        const nome = produto && produto.querySelector("h3")?.textContent.trim();
+        const textoPreco = produto && produto.querySelector("strong")?.textContent;
+        const precoEncontrado = textoPreco && textoPreco.match(/R\$\s*([\d.]+,\d{2})/);
 
-        if (!precoEncontrado) {
-            console.error(`Não foi possível identificar o preço do produto "${nome}".`);
-            alert("Não foi possível adicionar este produto porque o preço está inválido.");
+        if (!nome || !precoEncontrado) {
+            console.error("Não foi possível identificar o nome ou o preço do produto.");
+            atualizarStatus("Este produto não pôde ser adicionado. Verifique o preço no cardápio.");
             return;
         }
 
@@ -161,22 +181,21 @@ document.querySelectorAll(".produto .adicionar").forEach((botao) => {
             itensCarrinho.push({ nome, precoCentavos, quantidade: 1 });
         }
 
-        if (!salvarCarrinho()) {
-            if (itemExistente) {
-                itemExistente.quantidade -= 1;
-            } else {
-                itensCarrinho.pop();
-            }
-            atualizarCarrinho();
-            return;
-        }
-
-        atualizarCarrinho();
+        salvarCarrinho();
     });
 });
 
-const botaoFinalizarPedido = document.querySelector(".finalizar");
+const observacao = document.querySelector("#observacao");
+if (observacao) {
+    try {
+        observacao.value = localStorage.getItem(OBSERVACAO_STORAGE_KEY) || "";
+    } catch (erro) {
+        console.error("Não foi possível restaurar a observação do pedido.", erro);
+        atualizarStatus("Não foi possível restaurar os dados salvos neste navegador.");
+    }
+}
 
+const botaoFinalizarPedido = document.querySelector(".finalizar");
 if (botaoFinalizarPedido) {
     botaoFinalizarPedido.addEventListener("click", () => {
         if (itensCarrinho.length === 0) {
@@ -184,8 +203,17 @@ if (botaoFinalizarPedido) {
             return;
         }
 
-        window.location.href = "./html/endereco.html";
+        try {
+            localStorage.setItem(
+                OBSERVACAO_STORAGE_KEY,
+                observacao ? observacao.value.trim() : ""
+            );
+            window.location.href = "./html/endereco.html";
+        } catch (erro) {
+            console.error("Não foi possível salvar a observação do pedido.", erro);
+            alert("Não foi possível salvar os dados do pedido neste navegador.");
+        }
     });
 }
 
-atualizarCarrinho();
+carregarCarrinhoDoServidor();

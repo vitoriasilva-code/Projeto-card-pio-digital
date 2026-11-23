@@ -338,6 +338,11 @@ main {
     font-weight: bold;
 }
 
+.status-carrinho {
+    color: #777;
+    font-size: 13px;
+}
+
 .finalizar {
     width: 100%;
     padding: 13px 18px;
