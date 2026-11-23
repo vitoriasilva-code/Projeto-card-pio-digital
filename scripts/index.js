@@ -88,7 +88,36 @@ function atualizarCarrinho() {
         const preco = document.createElement("strong");
         preco.textContent = formatarMoeda(item.precoCentavos * item.quantidade);
 
-        linha.append(nome, preco);
+        const controles = document.createElement("div");
+        controles.className = "controles-item";
+
+        const botaoMenos = document.createElement("button");
+        botaoMenos.type = "button";
+        botaoMenos.className = "quantidade-menos";
+        botaoMenos.textContent = "−";
+        botaoMenos.setAttribute("aria-label", `Diminuir ${item.nome}`);
+        botaoMenos.addEventListener("click", () => alterarQuantidade(item.nome, -1));
+
+        const quantidade = document.createElement("span");
+        quantidade.className = "quantidade-item";
+        quantidade.textContent = item.quantidade;
+
+        const botaoMais = document.createElement("button");
+        botaoMais.type = "button";
+        botaoMais.className = "quantidade-mais";
+        botaoMais.textContent = "+";
+        botaoMais.setAttribute("aria-label", `Adicionar mais ${item.nome}`);
+        botaoMais.addEventListener("click", () => alterarQuantidade(item.nome, 1));
+
+        const botaoRemover = document.createElement("button");
+        botaoRemover.type = "button";
+        botaoRemover.className = "remover-item";
+        botaoRemover.innerHTML = '<i class="fa-solid fa-trash" aria-hidden="true"></i>';
+        botaoRemover.setAttribute("aria-label", `Remover ${item.nome}`);
+        botaoRemover.addEventListener("click", () => removerItem(item.nome));
+
+        controles.append(botaoMenos, quantidade, botaoMais, botaoRemover);
+        linha.append(nome, preco, controles);
         listaCarrinho.append(linha);
     });
 
@@ -100,6 +129,29 @@ function atualizarCarrinho() {
 
     totalCarrinho.textContent = formatarMoeda(totalCentavos);
     contadorCarrinho.textContent = quantidadeTotal;
+}
+
+function alterarQuantidade(nome, diferenca) {
+    const item = itensCarrinho.find((itemAtual) => itemAtual.nome === nome);
+    if (!item) {
+        return;
+    }
+
+    if (diferenca > 0 && item.quantidade >= Number.MAX_SAFE_INTEGER) {
+        atualizarStatus("Quantidade máxima atingida para este produto.");
+        return;
+    }
+
+    item.quantidade += diferenca;
+    if (item.quantidade <= 0) {
+        itensCarrinho = itensCarrinho.filter((itemAtual) => itemAtual.nome !== nome);
+    }
+    salvarCarrinho();
+}
+
+function removerItem(nome) {
+    itensCarrinho = itensCarrinho.filter((item) => item.nome !== nome);
+    salvarCarrinho();
 }
 
 function salvarCarrinho() {

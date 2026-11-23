@@ -44,6 +44,7 @@ test("valida pedido e calcula total usando os itens enviados", () => {
 
     assert.equal(pedido.totalCentavos, 3700);
     assert.equal(pedido.endereco.cep, "12345678");
+    assert.equal(pedido.endereco.telefone, "11999999999");
     assert.equal(pedido.pagamento.metodo, "pix");
 });
 

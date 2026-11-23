@@ -263,6 +263,14 @@ async function finalizeOrder() {
         document.querySelector("#step-success p").textContent =
             `Pedido ${pedido.id} registrado. Obrigado pela preferência!`;
         statusPedido.textContent = `Pedido ${pedido.id} registrado.`;
+        try {
+            await window.CardapioApi.request("/carrinho", {
+                method: "PUT",
+                body: "[]"
+            });
+        } catch (erro) {
+            console.error("O carrinho no servidor não pôde ser limpo após o pedido.", erro);
+        }
     } catch (erro) {
         console.error("Não foi possível registrar o pedido.", erro);
         statusPedido.textContent = "Não foi possível registrar o pedido no servidor.";

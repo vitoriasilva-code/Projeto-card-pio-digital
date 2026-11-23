@@ -161,7 +161,7 @@ function validarPedido(dados) {
             numero: endereco.numero.trim(),
             bairro: endereco.bairro.trim(),
             complemento: (endereco.complemento || "").trim(),
-            telefone: endereco.telefone.trim()
+            telefone: endereco.telefone.replace(/\D/g, "")
         },
         observacao: (dados.observacao || "").trim(),
         pagamento: {

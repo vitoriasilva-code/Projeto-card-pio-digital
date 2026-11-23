@@ -2,6 +2,31 @@ const ADDRESS_STORAGE_KEY = "loveJunckAddress";
 
 const formEndereco = document.querySelector("#form-address");
 if (formEndereco) {
+    const campoCep = formEndereco.elements.namedItem("cep");
+    const campoTelefone = formEndereco.elements.namedItem("telefone");
+
+    campoCep?.addEventListener("input", () => {
+        campoCep.value = campoCep.value.replace(/\D/g, "").slice(0, 8).replace(
+            /(\d{5})(\d)/,
+            "$1-$2"
+        );
+    });
+
+    campoTelefone?.addEventListener("input", () => {
+        const digitos = campoTelefone.value.replace(/\D/g, "").slice(0, 11);
+        if (digitos.length <= 10) {
+            campoTelefone.value = digitos.replace(
+                /(\d{2})(\d{4})(\d+)/,
+                "($1) $2-$3"
+            );
+        } else {
+            campoTelefone.value = digitos.replace(
+                /(\d{2})(\d{5})(\d+)/,
+                "($1) $2-$3"
+            );
+        }
+    });
+
     try {
         const enderecoSalvo = JSON.parse(
             sessionStorage.getItem(ADDRESS_STORAGE_KEY) || "null"
