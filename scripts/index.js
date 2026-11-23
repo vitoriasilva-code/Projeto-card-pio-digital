@@ -2,8 +2,15 @@ const CART_STORAGE_KEY = "loveJunckCart";
 const itensCarrinho = carregarCarrinho();
 
 function carregarCarrinho() {
-    try {
-        const itensSalvos = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
+    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio") 
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Erro ao buscar o cardápio.");
+            }
+            return response.json();
+        })
+        .then((itensCardapio) => {
+            const itensSalvos = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
 
         if (!Array.isArray(itensSalvos)) {
             throw new Error("O formato salvo para o carrinho é inválido.");
@@ -17,10 +24,12 @@ function carregarCarrinho() {
             item.precoCentavos >= 0 &&
             item.quantidade > 0
         );
-    } catch (erro) {
+    }) 
+
+    .catch(function (erro) {
         console.error("Não foi possível carregar o carrinho salvo.", erro);
         return [];
-    }
+    });
 }
 
 function formatarMoeda(valorCentavos) {
@@ -31,14 +40,22 @@ function formatarMoeda(valorCentavos) {
 }
 
 function salvarCarrinho() {
-    try {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(itensCarrinho));
-        return true;
-    } catch (erro) {
-        console.error("Não foi possível salvar o carrinho no navegador.", erro);
-        alert("Não foi possível salvar seu carrinho. Verifique as configurações do navegador e tente novamente.");
-        return false;
-    }
+    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio")
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Erro ao buscar o cardápio.");
+            }
+            return response.json();
+        })
+        .then((itensCardapio) => {
+            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(itensCarrinho));
+            return true;
+        })
+        .catch((erro) => {
+            console.error("Não foi possível salvar o carrinho no navegador.", erro);
+            alert("Não foi possível salvar seu carrinho. Verifique as configurações do navegador e tente novamente.");
+            return false;
+        });
 }
 
 function atualizarCarrinho() {
