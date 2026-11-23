@@ -2,7 +2,9 @@ const CART_STORAGE_KEY = "loveJunckCart";
 const itensCarrinho = carregarCarrinho();
 
 function carregarCarrinho() {
-    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio") 
+    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio", {
+        method: "GET"
+    })
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Erro ao buscar o cardápio.");
@@ -11,6 +13,12 @@ function carregarCarrinho() {
         })
         .then((itensCardapio) => {
             const itensSalvos = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
+            itensSalvos.forEach((item) => {
+                const itemCardapio = itensCardapio.find((produto) => produto.nome === item.nome);
+                if (itemCardapio) {
+                    item.precoCentavos = itemCardapio.precoCentavos;
+                }
+            });
 
         if (!Array.isArray(itensSalvos)) {
             throw new Error("O formato salvo para o carrinho é inválido.");
@@ -40,7 +48,11 @@ function formatarMoeda(valorCentavos) {
 }
 
 function salvarCarrinho() {
-    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio")
+    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(itensCarrinho)
+    })
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Erro ao buscar o cardápio.");
@@ -59,9 +71,35 @@ function salvarCarrinho() {
 }
 
 function atualizarCarrinho() {
-    const listaCarrinho = document.querySelector(".lista-carrinho");
-    const totalCarrinho = document.querySelector(".valor-total");
-    const contadorCarrinho = document.querySelector(".contador");
+    fetch("https://projeto-card-pio-digital.onrender.com/api/cardapio", {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(itensCarrinho)
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Erro ao buscar o cardápio.");
+            }
+            return response.json();
+        })
+        .then((itensCardapio) => {
+            const itensSalvos = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
+            itensSalvos.forEach((item) => {
+                const itemCardapio = itensCardapio.find((produto) => produto.nome === item.nome);
+                if (itemCardapio) {
+                    item.precoCentavos = itemCardapio.precoCentavos;
+                }
+            });
+            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(itensSalvos));
+        })
+        .catch((erro) => {
+            console.error("Não foi possível atualizar o carrinho.", erro);
+        });
+}
+
+const listaCarrinho = document.querySelector(".lista-carrinho");
+const totalCarrinho = document.querySelector(".valor-total");
+const contadorCarrinho = document.querySelector(".contador");
 
     if (!listaCarrinho || !totalCarrinho || !contadorCarrinho) {
         return;
@@ -97,7 +135,7 @@ function atualizarCarrinho() {
 
     totalCarrinho.textContent = formatarMoeda(totalCentavos);
     contadorCarrinho.textContent = quantidadeTotal;
-}
+
 
 document.querySelectorAll(".produto .adicionar").forEach((botao) => {
     botao.addEventListener("click", () => {
