@@ -27,10 +27,24 @@
             headers["Content-Type"] = "application/json";
         }
 
-        const response = await fetch(`${apiBaseUrl}${path}`, {
-            ...config,
-            headers
-        });
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 12000);
+        let response;
+
+        try {
+            response = await fetch(`${apiBaseUrl}${path}`, {
+                ...config,
+                headers,
+                signal: controller.signal
+            });
+        } catch (erro) {
+            if (erro.name === "AbortError") {
+                throw new Error("O servidor demorou demais para responder.");
+            }
+            throw new Error("Não foi possível conectar ao servidor.");
+        } finally {
+            clearTimeout(timeout);
+        }
 
         if (!response.ok) {
             let mensagem = `Erro na API (${response.status}).`;

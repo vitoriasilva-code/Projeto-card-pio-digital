@@ -1,6 +1,7 @@
 const CART_STORAGE_KEY = "loveJunckCart";
 const ADDRESS_STORAGE_KEY = "loveJunckAddress";
 const OBSERVACAO_STORAGE_KEY = "loveJunckOrderNote";
+const PENDING_ORDERS_STORAGE_KEY = "loveJunckPendingOrders";
 
 function formatarMoeda(valorCentavos) {
     return (valorCentavos / 100).toLocaleString("pt-BR", {
@@ -263,24 +264,103 @@ async function finalizeOrder() {
         document.querySelector("#step-success p").textContent =
             `Pedido ${pedido.id} registrado. Obrigado pela preferência!`;
         statusPedido.textContent = `Pedido ${pedido.id} registrado.`;
-        try {
-            await window.CardapioApi.request("/carrinho", {
+        window.CardapioApi.request("/carrinho", {
                 method: "PUT",
-                body: "[]"
-            });
-        } catch (erro) {
+                body: JSON.stringify([])
+            }).catch((erro) => {
             console.error("O carrinho no servidor não pôde ser limpo após o pedido.", erro);
-        }
+        });
     } catch (erro) {
         console.error("Não foi possível registrar o pedido.", erro);
         statusPedido.textContent = "Não foi possível registrar o pedido no servidor.";
+
+        const falhaDeConexao =
+            erro.message.includes("conectar") ||
+            erro.message.includes("demorou") ||
+            erro.message.includes("Failed to fetch");
+
+        if (falhaDeConexao) {
+            try {
+                const pendentes = JSON.parse(
+                    localStorage.getItem(PENDING_ORDERS_STORAGE_KEY) || "[]"
+                );
+                const pedidosPendentes = Array.isArray(pendentes) ? pendentes : [];
+                pedidosPendentes.push({
+                    criadoEmDispositivo: new Date().toISOString(),
+                    itens: itensCarrinho,
+                    endereco: enderecoPedido,
+                    observacao: localStorage.getItem(OBSERVACAO_STORAGE_KEY) || "",
+                    pagamento
+                });
+                localStorage.setItem(
+                    PENDING_ORDERS_STORAGE_KEY,
+                    JSON.stringify(pedidosPendentes)
+                );
+
+                localStorage.removeItem(CART_STORAGE_KEY);
+                localStorage.removeItem(OBSERVACAO_STORAGE_KEY);
+                sessionStorage.removeItem(ADDRESS_STORAGE_KEY);
+
+                document.querySelector("#step-2-content").classList.add("hidden");
+                document.querySelector(".cart-summary").classList.add("hidden");
+                document.querySelector("#step-success").classList.remove("hidden");
+                document.querySelector("#step-success p").textContent =
+                    "Pedido salvo neste dispositivo. Ele será enviado ao estabelecimento assim que o servidor estiver disponível.";
+                statusPedido.textContent =
+                    "Pedido aguardando conexão com o servidor.";
+                return;
+            } catch (erroAoSalvar) {
+                console.error("Não foi possível guardar o pedido localmente.", erroAoSalvar);
+            }
+        }
+
         alert(`${erro.message} Tente novamente.`);
     } finally {
         botaoFinalizar.disabled = false;
     }
 }
 
+async function sincronizarPedidosPendentes() {
+    try {
+        const pendentes = JSON.parse(
+            localStorage.getItem(PENDING_ORDERS_STORAGE_KEY) || "[]"
+        );
+        if (!Array.isArray(pendentes) || pendentes.length === 0) {
+            return;
+        }
+
+        const restantes = [];
+        for (const pedidoPendente of pendentes) {
+            try {
+                await window.CardapioApi.request("/pedidos", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        itens: pedidoPendente.itens,
+                        endereco: pedidoPendente.endereco,
+                        observacao: pedidoPendente.observacao,
+                        pagamento: pedidoPendente.pagamento
+                    })
+                });
+            } catch (erro) {
+                restantes.push(pedidoPendente);
+            }
+        }
+
+        if (restantes.length === 0) {
+            localStorage.removeItem(PENDING_ORDERS_STORAGE_KEY);
+        } else {
+            localStorage.setItem(
+                PENDING_ORDERS_STORAGE_KEY,
+                JSON.stringify(restantes)
+            );
+        }
+    } catch (erro) {
+        console.error("Não foi possível verificar pedidos pendentes.", erro);
+    }
+}
+
 exibirResumoPedido();
+sincronizarPedidosPendentes();
 
 if (itensCarrinho.length === 0) {
     botaoFinalizar.disabled = true;
